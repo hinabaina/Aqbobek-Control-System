@@ -1,0 +1,11 @@
+
+flask
+flask-cors
+sqlalchemy
+openai
+google-generativeai
+python-dotenv
+PyPDF2
+pdfplumber
+requests
+pydantic
