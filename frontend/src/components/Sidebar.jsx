@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import {
   LayoutDashboard, AlertOctagon, ListTodo, Users, UtensilsCrossed,
-  CalendarRange, FileText, LogOut, Sparkles, GraduationCap
+  CalendarRange, FileText, LogOut, Sparkles, GraduationCap, Layers, History
 } from "lucide-react";
 
 const directorNav = [
@@ -11,9 +11,11 @@ const directorNav = [
   { to: "/incidents", label: "Инциденты", icon: AlertOctagon },
   { to: "/tasks", label: "Задачи", icon: ListTodo },
   { to: "/schedule", label: "Расписание", icon: CalendarRange },
+  { to: "/ribbons", label: "Ленты", icon: Layers },
   { to: "/canteen", label: "Столовая", icon: UtensilsCrossed },
   { to: "/employees", label: "Сотрудники", icon: Users },
   { to: "/orders", label: "Приказы AI", icon: FileText },
+  { to: "/audit", label: "Журнал", icon: History },
 ];
 
 const teacherNav = [

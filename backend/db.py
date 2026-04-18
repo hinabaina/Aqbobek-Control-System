@@ -130,12 +130,63 @@ def init_schema() -> None:
             substitute_teacher_id INTEGER,
             class_name TEXT,
             lesson_time TEXT,
+            day_of_week TEXT,
+            room TEXT,
             reason TEXT,
             status TEXT DEFAULT 'pending',
+            rejected_candidates TEXT DEFAULT '[]',
+            schedule_id INTEGER,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            decided_at DATETIME
+        );
+        CREATE TABLE IF NOT EXISTS ribbons (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            strategy TEXT NOT NULL DEFAULT 'split',
+            parallel TEXT,
+            day_of_week TEXT NOT NULL,
+            lesson_time TEXT NOT NULL,
+            source_classes TEXT NOT NULL DEFAULT '[]',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS ribbon_groups (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ribbon_id INTEGER NOT NULL,
+            group_name TEXT NOT NULL,
+            subject TEXT NOT NULL,
+            teacher_id INTEGER NOT NULL,
+            room TEXT NOT NULL,
+            capacity INTEGER DEFAULT 30,
+            level TEXT,
+            students TEXT DEFAULT '[]',
+            FOREIGN KEY (ribbon_id) REFERENCES ribbons(id) ON DELETE CASCADE
+        );
+        CREATE TABLE IF NOT EXISTS audit_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            actor_id INTEGER,
+            actor_name TEXT,
+            entity TEXT NOT NULL,
+            entity_id INTEGER,
+            action TEXT NOT NULL,
+            payload TEXT
         );
         """
     )
+
+    # Upgrade existing columns without breaking older DB.
+    for table, col, ddl in [
+        ("substitutions", "day_of_week", "ALTER TABLE substitutions ADD COLUMN day_of_week TEXT"),
+        ("substitutions", "room", "ALTER TABLE substitutions ADD COLUMN room TEXT"),
+        ("substitutions", "rejected_candidates", "ALTER TABLE substitutions ADD COLUMN rejected_candidates TEXT DEFAULT '[]'"),
+        ("substitutions", "schedule_id", "ALTER TABLE substitutions ADD COLUMN schedule_id INTEGER"),
+        ("substitutions", "decided_at", "ALTER TABLE substitutions ADD COLUMN decided_at DATETIME"),
+        ("tasks", "expected_duration", "ALTER TABLE tasks ADD COLUMN expected_duration INTEGER"),
+        ("tasks", "scheduled_day", "ALTER TABLE tasks ADD COLUMN scheduled_day TEXT"),
+        ("tasks", "scheduled_time", "ALTER TABLE tasks ADD COLUMN scheduled_time TEXT"),
+    ]:
+        if not column_exists(table, col):
+            executescript(ddl + ";")
 
     # Add auth columns to employees without breaking the bot.
     for col, ddl in [

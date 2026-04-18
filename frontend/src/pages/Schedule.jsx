@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import api from "@/lib/api";
-import { Loader2, Sparkles, Trash2, Plus, Users, Repeat, AlertCircle } from "lucide-react";
+import { Loader2, Sparkles, Trash2, Plus, Users, Repeat, AlertCircle, Eraser, UserX } from "lucide-react";
 
 const DAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"];
 const TIMES = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00"];
@@ -76,6 +76,26 @@ export default function Schedule() {
     load();
   };
 
+  const requestSubstitute = async (scheduleId) => {
+    if (!window.confirm("Запросить замену для этого урока? AI подберёт учителя и отправит запрос.")) return;
+    try {
+      const { data } = await api.post("/substitutions/request", { schedule_id: scheduleId, reason: "Болезнь" });
+      if (data.candidate) {
+        alert(`Запрос отправлен учителю: ${data.candidate.full_name}. Он должен подтвердить в своём кабинете.`);
+      } else {
+        alert("Свободных кандидатов нет. Смотрите журнал для ручного решения.");
+      }
+    } catch (e) { setError(e.response?.data?.detail || "Ошибка"); }
+  };
+
+  const clearBulk = async (scope, day = null) => {
+    const msg = scope === "day" ? `Удалить всё расписание на ${day}?` : "Удалить ВСЁ расписание и все ленты?";
+    if (!window.confirm(msg)) return;
+    const { data } = await api.post("/admin/schedule/clear", { scope, day });
+    alert(`Удалено: ${data.deleted} слотов`);
+    load();
+  };
+
   const runGenerate = async () => {
     setGenerating(true); setGenResult(null);
     try {
@@ -137,6 +157,9 @@ export default function Schedule() {
           <button onClick={() => setSubOpen(true)} data-testid="button-open-substitute" className="h-10 inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-bold text-slate-900 hover:bg-slate-50">
             <Repeat size={14} /> Учитель заболел
           </button>
+          <button onClick={() => clearBulk("week")} data-testid="button-clear-week" className="h-10 inline-flex items-center gap-2 rounded-lg border border-red-200 text-red-600 px-3 text-xs font-bold hover:bg-red-50">
+            <Eraser size={13} /> Очистить неделю
+          </button>
           <button onClick={() => setGenOpen(true)} data-testid="button-open-generate" className="h-10 inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 text-sm font-bold text-white hover:bg-slate-800">
             <Sparkles size={14} /> AI-генератор
           </button>
@@ -172,9 +195,14 @@ export default function Schedule() {
                               <div className="font-bold">{it.class_name}</div>
                               <div className="opacity-90 truncate">{it.teacher_name}</div>
                               <div className="opacity-70 text-[10px] mt-0.5">каб. {it.room}</div>
-                              <button onClick={() => del(it.id)} className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 text-white/80 hover:text-white">
-                                <Trash2 size={12} />
-                              </button>
+                              <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 flex items-center gap-0.5">
+                                <button onClick={() => requestSubstitute(it.id)} className="text-white/80 hover:text-white" title="Запросить замену">
+                                  <UserX size={12} />
+                                </button>
+                                <button onClick={() => del(it.id)} className="text-white/80 hover:text-white" title="Удалить">
+                                  <Trash2 size={12} />
+                                </button>
+                              </div>
                             </div>
                           ))}
                           <button

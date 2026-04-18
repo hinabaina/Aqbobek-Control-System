@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import api from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { CalendarRange, ListTodo, MessageCircle, Check } from "lucide-react";
+import SubstitutionInbox from "@/components/SubstitutionInbox";
 
 const DAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"];
 const TIMES = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00"];
@@ -38,6 +39,8 @@ export default function TeacherCabinet() {
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 mt-1">Здравствуйте, {user?.full_name?.split(" ")[0]}</h1>
         <p className="text-sm text-slate-500 mt-1">Ваши задачи и расписание. Задания приходят от директора — здесь и в Telegram.</p>
       </div>
+
+      <SubstitutionInbox />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         <div className="xl:col-span-2 bg-white border border-slate-200 rounded-xl p-5">

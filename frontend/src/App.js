@@ -11,6 +11,8 @@ import Canteen from "@/pages/Canteen";
 import Schedule from "@/pages/Schedule";
 import Orders from "@/pages/Orders";
 import TeacherCabinet from "@/pages/TeacherCabinet";
+import Ribbons from "@/pages/Ribbons";
+import AuditLog from "@/pages/AuditLog";
 import Sidebar from "@/components/Sidebar";
 import VoiceFab from "@/components/VoiceFab";
 import { Toaster } from "sonner";
@@ -53,6 +55,8 @@ function App() {
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/canteen" element={<DirectorOnly><Canteen /></DirectorOnly>} />
             <Route path="/employees" element={<DirectorOnly><Employees /></DirectorOnly>} />
+            <Route path="/ribbons" element={<DirectorOnly><Ribbons /></DirectorOnly>} />
+            <Route path="/audit" element={<DirectorOnly><AuditLog /></DirectorOnly>} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/cabinet" element={<TeacherCabinet />} />
           </Route>

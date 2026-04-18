@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, date
 from typing import Optional, Any
 from pathlib import Path
+import json
 
 from dotenv import load_dotenv
 
@@ -19,6 +20,9 @@ import db
 import auth
 import ai
 import schedule_gen
+import ribbons as ribbon_module
+import task_ai
+import audit
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("acs")
@@ -406,6 +410,8 @@ async def schedule_create(data: ScheduleIn, user: dict = Depends(auth.require_di
         "INSERT INTO schedule (teacher_id, class_name, day_of_week, lesson_time, room) VALUES (?,?,?,?,?)",
         (data.teacher_id, data.class_name, data.day_of_week, data.lesson_time, data.room),
     )
+    task_ai.reschedule_tasks_on_schedule_change(data.teacher_id)
+    audit.log(user, "schedule", "create", new_id, data.model_dump())
     return db.query_one("SELECT * FROM schedule WHERE id=?", (new_id,))
 
 
@@ -547,6 +553,311 @@ async def list_classes(user: dict = Depends(auth.get_current_user)):
 @api.get("/messages")
 async def messages_feed(limit: int = 50, user: dict = Depends(auth.require_director)):
     return db.query("SELECT * FROM messages ORDER BY created_at DESC LIMIT ?", (limit,))
+
+
+# ==========================================================================
+# RIBBONS (ленты) — 4 strategy split/parallel_level/cross_class/merge
+# ==========================================================================
+class RibbonGroupIn(BaseModel):
+    group_name: str
+    subject: str
+    teacher_id: int
+    room: str
+    capacity: int = 30
+    level: Optional[str] = None
+    students: list[str] = []
+
+
+class RibbonIn(BaseModel):
+    name: str
+    strategy: str = "split"
+    parallel: Optional[str] = None
+    day_of_week: str
+    lesson_time: str
+    source_classes: list[str]
+    groups: list[RibbonGroupIn]
+
+
+def _load_ribbon(rid: int) -> dict:
+    r = db.query_one("SELECT * FROM ribbons WHERE id = ?", (rid,))
+    if not r:
+        raise HTTPException(404, "Лента не найдена")
+    groups = db.query("SELECT * FROM ribbon_groups WHERE ribbon_id = ? ORDER BY id", (rid,))
+    for g in groups:
+        try:
+            g["students"] = json.loads(g.get("students") or "[]")
+        except Exception:
+            g["students"] = []
+        t = db.query_one("SELECT full_name FROM employees WHERE id = ?", (g["teacher_id"],))
+        g["teacher_name"] = t["full_name"] if t else None
+    r["groups"] = groups
+    return r
+
+
+@api.get("/ribbons/strategies")
+async def ribbon_strategies(user: dict = Depends(auth.get_current_user)):
+    return [
+        {"key": s.key, "title": s.title}
+        for s in ribbon_module.STRATEGIES.values()
+    ]
+
+
+@api.get("/ribbons")
+async def list_ribbons(
+    day: Optional[str] = None,
+    parallel: Optional[str] = None,
+    user: dict = Depends(auth.get_current_user),
+):
+    sql = "SELECT * FROM ribbons"
+    where, params = [], []
+    if day:
+        where.append("day_of_week = ?")
+        params.append(day)
+    if parallel:
+        where.append("parallel = ?")
+        params.append(parallel)
+    if where:
+        sql += " WHERE " + " AND ".join(where)
+    sql += " ORDER BY day_of_week, lesson_time"
+    rows = db.query(sql, params)
+    return [_load_ribbon(r["id"]) for r in rows]
+
+
+@api.post("/ribbons/validate")
+async def ribbons_validate(payload: RibbonIn, user: dict = Depends(auth.require_director)):
+    ribbon_dict = {
+        "strategy": payload.strategy,
+        "day_of_week": payload.day_of_week,
+        "lesson_time": payload.lesson_time,
+        "source_classes": json.dumps(payload.source_classes, ensure_ascii=False),
+    }
+    return ribbon_module.validate_ribbon(ribbon_dict, [g.model_dump() for g in payload.groups])
+
+
+@api.post("/ribbons")
+async def create_ribbon(payload: RibbonIn, user: dict = Depends(auth.require_director)):
+    ribbon_dict = {
+        "strategy": payload.strategy,
+        "day_of_week": payload.day_of_week,
+        "lesson_time": payload.lesson_time,
+        "source_classes": json.dumps(payload.source_classes, ensure_ascii=False),
+    }
+    validation = ribbon_module.validate_ribbon(ribbon_dict, [g.model_dump() for g in payload.groups])
+    if not validation["valid"]:
+        raise HTTPException(status_code=409, detail={"message": "Конфликты в ленте", "conflicts": validation["conflicts"]})
+    rid = db.execute(
+        "INSERT INTO ribbons (name, strategy, parallel, day_of_week, lesson_time, source_classes) VALUES (?,?,?,?,?,?)",
+        (
+            payload.name,
+            payload.strategy,
+            payload.parallel,
+            payload.day_of_week,
+            payload.lesson_time,
+            json.dumps(payload.source_classes, ensure_ascii=False),
+        ),
+    )
+    for g in payload.groups:
+        db.execute(
+            "INSERT INTO ribbon_groups (ribbon_id, group_name, subject, teacher_id, room, capacity, level, students) "
+            "VALUES (?,?,?,?,?,?,?,?)",
+            (
+                rid,
+                g.group_name,
+                g.subject,
+                g.teacher_id,
+                g.room,
+                g.capacity,
+                g.level,
+                json.dumps(g.students, ensure_ascii=False),
+            ),
+        )
+    audit.log(user, "ribbon", "create", rid, payload.model_dump())
+    return _load_ribbon(rid)
+
+
+@api.delete("/ribbons/{rid}")
+async def delete_ribbon(rid: int, user: dict = Depends(auth.require_director)):
+    db.execute("DELETE FROM ribbon_groups WHERE ribbon_id = ?", (rid,))
+    db.execute("DELETE FROM ribbons WHERE id = ?", (rid,))
+    audit.log(user, "ribbon", "delete", rid)
+    return {"ok": True}
+
+
+# ==========================================================================
+# SUBSTITUTIONS WORKFLOW (request → pending → confirmed/rejected → next)
+# ==========================================================================
+class SubstituteRequestIn(BaseModel):
+    schedule_id: int
+    reason: Optional[str] = "Болезнь"
+    date: Optional[str] = None
+
+
+class SubstituteDecisionIn(BaseModel):
+    substitution_id: int
+    decision: str  # "accept" | "reject"
+
+
+def _pick_candidate(schedule_row: dict, rejected: list[int]) -> Optional[dict]:
+    teacher_id = schedule_row["teacher_id"]
+    absent = db.query_one("SELECT id, full_name, subject, role FROM employees WHERE id = ?", (teacher_id,))
+    all_teachers = db.query(
+        "SELECT id, full_name, subject, role FROM employees "
+        "WHERE role = 'Учитель' AND id != ? AND id NOT IN (" + ",".join("?" * max(len(rejected), 1)) + ")",
+        [teacher_id, *(rejected or [-1])],
+    )
+    all_schedule = db.query("SELECT teacher_id, day_of_week, lesson_time FROM schedule")
+    cands = schedule_gen.find_substitute_candidates(absent, schedule_row, all_teachers, all_schedule)
+    return cands[0] if cands else None
+
+
+@api.post("/substitutions/request")
+async def substitution_request(payload: SubstituteRequestIn, user: dict = Depends(auth.require_director)):
+    sched = db.query_one(
+        "SELECT s.*, e.full_name as teacher_name FROM schedule s "
+        "LEFT JOIN employees e ON e.id = s.teacher_id WHERE s.id = ?",
+        (payload.schedule_id,),
+    )
+    if not sched:
+        raise HTTPException(404, "Урок не найден")
+    cand = _pick_candidate(sched, [])
+    today = payload.date or date.today().isoformat()
+    sid = db.execute(
+        "INSERT INTO substitutions (date, original_teacher_id, substitute_teacher_id, class_name, lesson_time, day_of_week, room, reason, status, rejected_candidates, schedule_id) "
+        "VALUES (?,?,?,?,?,?,?,?, 'pending', '[]', ?)",
+        (
+            today,
+            sched["teacher_id"],
+            cand["id"] if cand else None,
+            sched["class_name"],
+            sched["lesson_time"],
+            sched["day_of_week"],
+            sched["room"],
+            payload.reason,
+            sched["id"],
+        ),
+    )
+    audit.log(user, "substitution", "request", sid, {"schedule_id": payload.schedule_id, "candidate": cand["id"] if cand else None})
+    return {"id": sid, "candidate": cand, "status": "pending"}
+
+
+@api.post("/substitutions/decide")
+async def substitution_decide(payload: SubstituteDecisionIn, user: dict = Depends(auth.get_current_user)):
+    sub = db.query_one("SELECT * FROM substitutions WHERE id = ?", (payload.substitution_id,))
+    if not sub:
+        raise HTTPException(404, "Запрос не найден")
+    if sub["status"] != "pending":
+        raise HTTPException(409, f"Запрос уже в статусе {sub['status']}")
+    # Only the currently-suggested candidate (or director) may decide
+    if sub["substitute_teacher_id"] and sub["substitute_teacher_id"] != user["id"] and (user.get("user_role") or "").lower() != "director":
+        raise HTTPException(403, "Это решение может принять только назначенный учитель или директор")
+
+    if payload.decision == "accept":
+        db.execute(
+            "UPDATE substitutions SET status='confirmed', decided_at=CURRENT_TIMESTAMP WHERE id = ?",
+            (sub["id"],),
+        )
+        # apply to schedule if schedule_id present
+        if sub.get("schedule_id") and sub.get("substitute_teacher_id"):
+            db.execute(
+                "UPDATE schedule SET teacher_id = ? WHERE id = ?",
+                (sub["substitute_teacher_id"], sub["schedule_id"]),
+            )
+            task_ai.reschedule_tasks_on_schedule_change(sub["substitute_teacher_id"])
+            task_ai.reschedule_tasks_on_schedule_change(sub["original_teacher_id"])
+        audit.log(user, "substitution", "confirm", sub["id"])
+        return db.query_one("SELECT * FROM substitutions WHERE id = ?", (sub["id"],))
+
+    if payload.decision == "reject":
+        rejected = json.loads(sub.get("rejected_candidates") or "[]")
+        if sub["substitute_teacher_id"]:
+            rejected.append(sub["substitute_teacher_id"])
+        # pick next candidate
+        sched = db.query_one("SELECT * FROM schedule WHERE id = ?", (sub["schedule_id"],))
+        next_cand = _pick_candidate(sched, rejected) if sched else None
+        if next_cand:
+            db.execute(
+                "UPDATE substitutions SET substitute_teacher_id = ?, rejected_candidates = ? WHERE id = ?",
+                (next_cand["id"], json.dumps(rejected), sub["id"]),
+            )
+            audit.log(user, "substitution", "reject_next", sub["id"], {"rejected": rejected, "next": next_cand["id"]})
+            return {"status": "pending", "next_candidate": next_cand, "rejected_candidates": rejected}
+        db.execute(
+            "UPDATE substitutions SET status='no_candidates', rejected_candidates = ?, decided_at=CURRENT_TIMESTAMP WHERE id = ?",
+            (json.dumps(rejected), sub["id"]),
+        )
+        audit.log(user, "substitution", "no_candidates", sub["id"], {"rejected": rejected})
+        return {"status": "no_candidates", "rejected_candidates": rejected}
+
+    raise HTTPException(400, "decision must be accept|reject")
+
+
+@api.get("/substitutions/pending_for_me")
+async def pending_for_me(user: dict = Depends(auth.get_current_user)):
+    rows = db.query(
+        "SELECT s.*, eo.full_name as original_name FROM substitutions s "
+        "LEFT JOIN employees eo ON eo.id = s.original_teacher_id "
+        "WHERE s.substitute_teacher_id = ? AND s.status = 'pending' "
+        "ORDER BY s.created_at DESC",
+        (user["id"],),
+    )
+    return rows
+
+
+# ==========================================================================
+# TASK AI: estimation + smart placement
+# ==========================================================================
+class TaskEstimateIn(BaseModel):
+    text: str
+
+
+@api.post("/ai/tasks/estimate")
+async def ai_task_estimate(payload: TaskEstimateIn, user: dict = Depends(auth.get_current_user)):
+    mins = await task_ai.estimate_duration(payload.text)
+    return {"minutes": mins}
+
+
+@api.post("/tasks/{tid}/place")
+async def place_task(tid: int, user: dict = Depends(auth.get_current_user)):
+    slot = task_ai.place_task(tid)
+    if not slot:
+        raise HTTPException(409, "Нет свободных окон у исполнителя")
+    audit.log(user, "task", "place", tid, slot)
+    return {"slot": slot, "task": db.query_one("SELECT * FROM tasks WHERE id = ?", (tid,))}
+
+
+# ==========================================================================
+# ADMIN OVERRIDES & AUDIT LOG
+# ==========================================================================
+class BulkDeleteIn(BaseModel):
+    scope: str  # "day" | "week"
+    day: Optional[str] = None
+
+
+@api.post("/admin/schedule/clear")
+async def admin_schedule_clear(payload: BulkDeleteIn, user: dict = Depends(auth.require_director)):
+    if payload.scope == "day" and payload.day:
+        cnt = len(db.query("SELECT id FROM schedule WHERE day_of_week = ?", (payload.day,)))
+        db.execute("DELETE FROM schedule WHERE day_of_week = ?", (payload.day,))
+        audit.log(user, "schedule", "clear_day", None, {"day": payload.day, "count": cnt})
+        return {"deleted": cnt, "scope": "day"}
+    if payload.scope == "week":
+        cnt = len(db.query("SELECT id FROM schedule"))
+        db.execute("DELETE FROM schedule", ())
+        db.execute("DELETE FROM ribbon_groups", ())
+        db.execute("DELETE FROM ribbons", ())
+        audit.log(user, "schedule", "clear_week", None, {"count": cnt})
+        return {"deleted": cnt, "scope": "week"}
+    raise HTTPException(400, "scope must be day|week")
+
+
+@api.get("/audit")
+async def audit_list(limit: int = 100, entity: Optional[str] = None, user: dict = Depends(auth.require_director)):
+    return audit.recent(limit, entity)
+
+
+# ==========================================================================
+# Schedule CREATE hook: trigger task reschedule + audit
+# ==========================================================================
 
 
 # Mount router & CORS
