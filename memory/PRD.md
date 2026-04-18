@@ -42,3 +42,10 @@ User provided `da.txt` (AIS Hack 3.0 / Aqbobek school tech spec) and asked to bu
 
 ## Sessions log
 - **18.04.2026** — MVP build: shared SQLite, auth, all 9 modules, heatmap, kanban, voice-to-task, AI substitution, AI schedule generator, RAG orders, teacher cabinet.
+
+## Session 2 (18.04.2026 evening)
+- User uploaded 2 PDFs: `нагрузка учителей для хакатона 2025-2026.pdf` + `для хакатона расписание.pdf`.
+- Extracted 41 canonical teachers from the load-PDF and seeded into `employees` table (idempotent).
+- Parsed schedule PDF with pdfplumber → `/app/data/real_schedule.json`; seeded 58 real lessons for classes 7A/7B (other classes use different PDF layouts; can be generated via AI-генератор).
+- New files: `backend/seed_real_data.py`, `backend/parse_schedule_pdf.py`.
+- Full test pass: 29/29 backend tests, all frontend flows. No bugs.
