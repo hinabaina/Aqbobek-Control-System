@@ -1,0 +1,111 @@
+{
+  "theme": "light",
+  "archetype": "Archetype 4 (Swiss & High-Contrast)",
+  "language": "Russian",
+  "typography": {
+    "font_family": {
+      "heading": "'Manrope', sans-serif",
+      "body": "'Manrope', sans-serif",
+      "mono": "'JetBrains Mono', monospace"
+    },
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap",
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight text-slate-900",
+      "h3": "text-lg sm:text-xl font-bold tracking-tight text-slate-900",
+      "body": "text-sm font-medium text-slate-600",
+      "small": "text-xs font-semibold tracking-wider uppercase text-slate-500"
+    }
+  },
+  "colors": {
+    "background": "bg-slate-50",
+    "surface": "bg-white",
+    "border": "border-slate-200",
+    "text_primary": "text-slate-900",
+    "text_secondary": "text-slate-500",
+    "primary": {
+      "bg": "bg-slate-900",
+      "text": "text-white",
+      "hover": "hover:bg-slate-800"
+    },
+    "accent_danger": {
+      "bg": "bg-red-500",
+      "text": "text-white",
+      "hover": "hover:bg-red-600"
+    },
+    "accent_warning": {
+      "bg": "bg-amber-500",
+      "text": "text-white",
+      "hover": "hover:bg-amber-600"
+    },
+    "accent_success": {
+      "bg": "bg-emerald-500",
+      "text": "text-white"
+    },
+    "heatmap": {
+      "level_0": "bg-slate-100",
+      "level_1": "bg-amber-100",
+      "level_2": "bg-amber-300",
+      "level_3": "bg-orange-500",
+      "level_4": "bg-red-600 text-white"
+    }
+  },
+  "layout": {
+    "spacing_system": "Dense control room grid. p-4 to p-6 inside cards. gap-4 or gap-6 between widgets.",
+    "container": "w-full mx-auto",
+    "grid_dashboard": "grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4",
+    "surface_strategy": "Flat solid surfaces with 1px border. No drop shadows for dashboard cards to maintain pristine data clarity. Modals/Dialogs use shadow-xl.",
+    "sidebar": "w-64 border-r border-slate-200 bg-white h-screen fixed top-0 left-0 flex flex-col"
+  },
+  "components": {
+    "card": "bg-white border border-slate-200 rounded-xl p-5",
+    "button_primary": "inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2",
+    "button_secondary": "inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-50 focus:outline-none",
+    "input": "flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent",
+    "kanban_column": "bg-slate-100/50 rounded-xl p-4 border border-slate-200 flex flex-col gap-3 h-full",
+    "kanban_card": "bg-white border border-slate-200 rounded-lg p-4 shadow-sm cursor-grab active:cursor-grabbing hover:border-slate-300 transition-colors",
+    "heatmap_cell": "rounded-sm transition-colors duration-200 flex items-center justify-center text-xs font-bold",
+    "voice_mic_fab": "fixed bottom-8 right-8 h-14 w-14 rounded-full bg-slate-900 text-white shadow-xl flex items-center justify-center hover:scale-105 transition-transform backdrop-blur-xl border border-slate-700/50 z-50",
+    "badge": "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+  },
+  "media": {
+    "images": {
+      "login_bg": {
+        "url": "https://images.unsplash.com/photo-1762088776943-28a9fbadcec4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBzY2hvb2wlMjBidWlsZGluZyUyMGV4dGVyaW9yfGVufDB8fHx8MTc3NjU0MDQ2OXww&ixlib=rb-4.1.0&q=85",
+        "description": "Modern school building exterior at twilight with glowing windows.",
+        "usage": "Background for the Director/Teacher login screen. CRITICAL: Add absolute inset-0 bg-slate-900/80 overlay over this image so the white login card stands out."
+      },
+      "teacher_avatar_female": {
+        "url": "https://images.unsplash.com/photo-1758685845906-6f705cde4fb7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHw0fHx0ZWFjaGVyJTIwcG9ydHJhaXQlMjBwcm9mZXNzaW9uYWx8ZW58MHx8fHwxNzc2NTQwNDcyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional female teacher standing by a chalkboard.",
+        "usage": "Avatar for female teachers in staff list, schedule, and kanban cards."
+      },
+      "teacher_avatar_male": {
+        "url": "https://images.unsplash.com/photo-1758685734511-4f49ce9a382b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHwyfHx0ZWFjaGVyJTIwcG9ydHJhaXQlMjBwcm9mZXNzaW9uYWx8ZW58MHx8fHwxNzc2NTQwNDcyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional male teacher with glasses smiling.",
+        "usage": "Avatar for male teachers in staff list, schedule, and kanban cards."
+      }
+    }
+  },
+  "testing": {
+    "data_testid_conventions": {
+      "buttons": "button-[action]",
+      "inputs": "input-[field-name]",
+      "cards": "card-[entity-type]",
+      "links": "link-[destination]",
+      "widgets": "widget-[name]"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly use Russian language for all UI elements (e.g., 'Дашборд', 'Инциденты', 'Расписание', 'Столовая', 'Приказы RAG').",
+    "Use Manrope font for all text. It supports Cyrillic natively and looks highly authoritative yet modern.",
+    "Implement the layout with a sticky left sidebar and a scrollable main content area (margin-left applied to main wrapper to accommodate the fixed sidebar).",
+    "Use Phosphor icons or Lucide-react for sharp, professional iconography.",
+    "The Heatmap must be dense. Map teaching load values (0-6 hours per day) to color intensities: 0 = bg-slate-100, 1-2 = bg-amber-100, 3-4 = bg-amber-300, 5 = bg-orange-500, 6+ = bg-red-600.",
+    "Voice-to-Task must be a fixed FAB (Floating Action Button) in the bottom right corner with a glassmorphism or elevated shadow effect.",
+    "AI Substitution ('Учитель заболел') action should trigger a modal dialog displaying a skeleton loader for ~1-2 seconds, then revealing the AI-recommended substitute teacher.",
+    "Do not use generic purple/cyan gradients. Rely entirely on high-contrast Swiss aesthetics: strong slate-900 blacks, crisp whites, flat borders, and meaningful accent colors (red/amber) to maintain a premium SaaS feel suitable for a Director.",
+    "Ensure the RAG orders view features a side-by-side or clearly delineated layout: Original text vs AI Simplified text.",
+    "Ensure all interactive components (buttons, links, inputs) have 'data-testid' attributes as defined in the testing conventions."
+  ]
+}
