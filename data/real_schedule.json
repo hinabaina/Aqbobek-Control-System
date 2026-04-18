@@ -1,0 +1,642 @@
+[
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "08:00",
+  "subject": "Орыс тілі",
+  "teacher_name": "Гореева А.М.",
+  "room": "303"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "08:00",
+  "subject": "",
+  "teacher_name": "Химия Аманғазы С.",
+  "room": "211"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "09:05",
+  "subject": "",
+  "teacher_name": "Химия Аманғазы С.",
+  "room": "211"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "09:05",
+  "subject": "",
+  "teacher_name": "Алгебра Байдирахманова Б.С.",
+  "room": "311"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "10:10",
+  "subject": "",
+  "teacher_name": "Алгебра Арыстанғалиқызы А",
+  "room": "110"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "10:10",
+  "subject": "Орыс тілі",
+  "teacher_name": "Гореева А.М.",
+  "room": "302"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "11:00",
+  "subject": "Қазақ тілі",
+  "teacher_name": "Утенова К.К.",
+  "room": "311"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "11:00",
+  "subject": "",
+  "teacher_name": "Физика Сунгариева А.Б.",
+  "room": "211"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "11:50",
+  "subject": "Тәрбие сағаты",
+  "teacher_name": "Саламатұлы А.",
+  "room": "109"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "11:50",
+  "subject": "Қазақ тілі",
+  "teacher_name": "Утенова К.К.",
+  "room": "311"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "13:05",
+  "subject": "Ағылшын тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "304"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "13:05",
+  "subject": "Дүние жүзі тарихы",
+  "teacher_name": "Қангерей Қ.",
+  "room": "310"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "14:20",
+  "subject": "Дене шынықтыру",
+  "teacher_name": "Қарабай А.Н.",
+  "room": "үлкен спортзал"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "14:20",
+  "subject": "Қытай тілі",
+  "teacher_name": "Қайржанова А.",
+  "room": "305"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Понедельник",
+  "lesson_time": "15:05",
+  "subject": "Физика электив",
+  "teacher_name": "Сунгариева А.Б.",
+  "room": "209"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Понедельник",
+  "lesson_time": "15:05",
+  "subject": "математика (электив)",
+  "teacher_name": "Байдирахманова Б.С.",
+  "room": "109"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "08:00",
+  "subject": "",
+  "teacher_name": "Физика Сунгариева А.Б.",
+  "room": "209"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "08:00",
+  "subject": "",
+  "teacher_name": "География Жадырасын Е.М.",
+  "room": "309"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "09:05",
+  "subject": "көркем еңбек",
+  "teacher_name": "Қойшан Ы.А/Қазиев Н.",
+  "room": "307/123 АЙС"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "09:05",
+  "subject": "Қазақ әдебиеті",
+  "teacher_name": "Утенова К.К",
+  "room": "311"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "10:10",
+  "subject": "Орыс тілі",
+  "teacher_name": "Гореева А.М.",
+  "room": "302"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "10:10",
+  "subject": "көркем еңбек",
+  "teacher_name": "Қойшан Ы.А/Қазиев Н.",
+  "room": "307/123 АЙС"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "11:00",
+  "subject": "Дүние жүзі тарихы",
+  "teacher_name": "Қангерей Қ.",
+  "room": "310"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "11:00",
+  "subject": "Ағылшын тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "305"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "11:50",
+  "subject": "Қазақ әдебиеті",
+  "teacher_name": "Утенова К.К",
+  "room": "311"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "11:50",
+  "subject": "Қазақстан тарихы",
+  "teacher_name": "Қангерей Қ.",
+  "room": "310"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "13:05",
+  "subject": "Ағылшын тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "206"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "13:05",
+  "subject": "Жаһандық құзыреттілік",
+  "teacher_name": "Халелова А.Е",
+  "room": "310"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "14:20",
+  "subject": "Қазақстан тарихы",
+  "teacher_name": "Қангерей Қ.",
+  "room": "310"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "14:20",
+  "subject": "Дене шынықтыру",
+  "teacher_name": "Қарабай А.Н.",
+  "room": "үлкен спортзал"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Вторник",
+  "lesson_time": "15:05",
+  "subject": "математика (электив)",
+  "teacher_name": "Арыстанғалиқызы А",
+  "room": "110"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Вторник",
+  "lesson_time": "15:05",
+  "subject": "Химия электив",
+  "teacher_name": "Аманғазы С.",
+  "room": "201"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "08:00",
+  "subject": "",
+  "teacher_name": "Биология Қайырқұлов Н.А.",
+  "room": "203"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "08:00",
+  "subject": "Орыс тілі",
+  "teacher_name": "Гореева А.М.",
+  "room": "303"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "09:05",
+  "subject": "",
+  "teacher_name": "Химия Аманғазы С.",
+  "room": "201"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "09:05",
+  "subject": "",
+  "teacher_name": "Алгебра Байдирахманова Б.С.",
+  "room": "311"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "10:10",
+  "subject": "",
+  "teacher_name": "Алгебра Арыстанғалиқызы А",
+  "room": "110"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "10:10",
+  "subject": "",
+  "teacher_name": "Химия Аманғазы С.",
+  "room": "201"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "11:00",
+  "subject": "Қазақ тілі",
+  "teacher_name": "Утенова К.К.",
+  "room": "311"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "11:00",
+  "subject": "",
+  "teacher_name": "Биология Қайырқұлов Н.А.",
+  "room": "203"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "11:50",
+  "subject": "Дене шынықтыру",
+  "teacher_name": "Қарабай А.Н.",
+  "room": "үлкен спортзал"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "11:50",
+  "subject": "Қазақ тілі",
+  "teacher_name": "Утенова К.К.",
+  "room": "311"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "13:05",
+  "subject": "қытай тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "304"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "13:05",
+  "subject": "Дене шынықтыру",
+  "teacher_name": "Қарабай А.Н.",
+  "room": "үлкен спортзал"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "14:20",
+  "subject": "Биология (электив)",
+  "teacher_name": "Қайырқұлов Н.А.",
+  "room": "203"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "14:20",
+  "subject": "робоботехника",
+  "teacher_name": "Косов М",
+  "room": "технопар к"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Среда",
+  "lesson_time": "15:05",
+  "subject": "География (электив)",
+  "teacher_name": "Жадырасын Е.",
+  "room": "309"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Среда",
+  "lesson_time": "15:05",
+  "subject": "математика (электив)",
+  "teacher_name": "Байдирахманова Б.С.",
+  "room": "109"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "08:00",
+  "subject": "",
+  "teacher_name": "Физика Сунгариева А.Б.",
+  "room": "209"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "08:00",
+  "subject": "Ағылшын тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "304"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "09:05",
+  "subject": "Орыс тілі",
+  "teacher_name": "Гореева А.М.",
+  "room": "303"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "09:05",
+  "subject": "геометрия",
+  "teacher_name": "Байдирахманова Б.С.",
+  "room": "109"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "10:10",
+  "subject": "геометрия",
+  "teacher_name": "Арыстанғалиқызы А",
+  "room": "110"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "10:10",
+  "subject": "Орыс тілі",
+  "teacher_name": "Гореева А.М.",
+  "room": "303"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "11:00",
+  "subject": "Жаһандық құзыреттілік",
+  "teacher_name": "Халелова А.Е.",
+  "room": "310"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "11:00",
+  "subject": "",
+  "teacher_name": "Физика Сунгариева А.Б.",
+  "room": "211"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "11:50",
+  "subject": "Қазақстан тарихы",
+  "teacher_name": "Қангерей Қ.",
+  "room": "310"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "11:50",
+  "subject": "Қазақ әдебиеті",
+  "teacher_name": "Утенова К.К",
+  "room": "311"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "13:05",
+  "subject": "Қазақ әдебиеті",
+  "teacher_name": "Утенова К.К",
+  "room": "311"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "13:05",
+  "subject": "Қазақстан тарихы",
+  "teacher_name": "Қангерей Қ.",
+  "room": "310"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "14:20",
+  "subject": "",
+  "teacher_name": "Электив Ағылшын Қайыржанова А.",
+  "room": "305"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "14:20",
+  "subject": "Биология (электив)",
+  "teacher_name": "Қайырқұлов Н.А.",
+  "room": "203"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Четверг",
+  "lesson_time": "15:05",
+  "subject": "Химия электив",
+  "teacher_name": "Аманғазы С.",
+  "room": "211"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Четверг",
+  "lesson_time": "15:05",
+  "subject": "Физика электив",
+  "teacher_name": "Сунгариева А.Б.",
+  "room": "209"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "08:00",
+  "subject": "Ағылшын тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "304"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "08:00",
+  "subject": "Дене шынықтыру",
+  "teacher_name": "Қарабай А.Н.",
+  "room": "үлкен спортзал"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "09:05",
+  "subject": "",
+  "teacher_name": "Алгебра Арыстанғалиқызы А",
+  "room": "110"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "09:05",
+  "subject": "",
+  "teacher_name": "Биология Қайырқұлов Н.А.",
+  "room": "203"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "10:10",
+  "subject": "география",
+  "teacher_name": "Жадырасын Е.",
+  "room": "309"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "10:10",
+  "subject": "Ағылшын тілі",
+  "teacher_name": "Қайыржанова А.",
+  "room": "305"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "11:00",
+  "subject": "информатика",
+  "teacher_name": "Сапар Е.",
+  "room": "104"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "11:00",
+  "subject": "",
+  "teacher_name": "Алгебра Байдирахманова Б.С.",
+  "room": "109"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "11:50",
+  "subject": "",
+  "teacher_name": "Биология Қайырқұлов Н.А.",
+  "room": "203"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "11:50",
+  "subject": "информатика",
+  "teacher_name": "Сапар Е.",
+  "room": "104"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "13:05",
+  "subject": "Дене шынықтыру",
+  "teacher_name": "Қарабай А.Н.",
+  "room": "үлкен спортзал"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "13:05",
+  "subject": "География (электив)",
+  "teacher_name": "Жадырасын Е.",
+  "room": "304"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "14:20",
+  "subject": "робоботехника",
+  "teacher_name": "Косов М",
+  "room": "технопар к"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "14:20",
+  "subject": "Тәрбие сағаты",
+  "teacher_name": "Саламатұлы А.",
+  "room": "302"
+ },
+ {
+  "class_name": "7A",
+  "day_of_week": "Пятница",
+  "lesson_time": "15:05",
+  "subject": "математика (электив)",
+  "teacher_name": "Арыстанғалиқызы А",
+  "room": "110"
+ },
+ {
+  "class_name": "7B",
+  "day_of_week": "Пятница",
+  "lesson_time": "15:05",
+  "subject": "",
+  "teacher_name": "Электив Ағылшын Қайыржанова А.",
+  "room": "302"
+ }
+]
