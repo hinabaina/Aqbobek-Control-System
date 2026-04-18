@@ -49,3 +49,21 @@ User provided `da.txt` (AIS Hack 3.0 / Aqbobek school tech spec) and asked to bu
 - Parsed schedule PDF with pdfplumber → `/app/data/real_schedule.json`; seeded 58 real lessons for classes 7A/7B (other classes use different PDF layouts; can be generated via AI-генератор).
 - New files: `backend/seed_real_data.py`, `backend/parse_schedule_pdf.py`.
 - Full test pass: 29/29 backend tests, all frontend flows. No bugs.
+
+## Session 3 (18.04.2026, вечер) — V2 Schedule Core
+Полная реализация TZ "Ribbon Scheduling / Substitution Workflow / Task AI / Admin":
+
+### Backend (файлы: ribbons.py, task_ai.py, audit.py + расширение server.py/db.py)
+- **Модуль «Ленты»** — абстракция `RibbonStrategy` + 4 конкретных стратегии (Strategy pattern): `split`, `parallel_level`, `cross_class`, `merge`. Таблицы `ribbons`, `ribbon_groups`. Валидация в реальном времени: учитель занят / кабинет занят / ученик в 2 группах одновременно / перегруз по capacity / занятость в schedule.
+- **Substitution Workflow** — Request → Pending → Confirmed/Rejected с ротацией кандидатов. Расширение `substitutions` (day_of_week, room, rejected_candidates, schedule_id, decided_at). При accept schedule.teacher_id обновляется и запускается пересчёт задач.
+- **Task AI** — `estimate_duration(text)` через Groq LLM, `find_open_window(teacher_id)` ищет «форточки», `place_task(task_id)` ставит задачу в слот, `reschedule_tasks_on_schedule_change(teacher_id)` автосдвиг при изменении уроков.
+- **Admin overrides** — `/admin/schedule/clear` (scope=day|week), полная перегенерация через существующий `/ai/schedule/generate?replace=true`.
+- **Audit Log** — append-only `audit_log` + `audit.log(actor, entity, action, id, payload)`. Все create/update/delete ленты, расписания и substitution решения логируются.
+
+### Frontend
+- Новые страницы: `/ribbons` (CRUD с валидацией конфликтов в реальном времени) и `/audit` (журнал с фильтром по сущности)
+- `SubstitutionInbox` виджет в кабинете учителя — pending запросы с кнопками Подтвердить / Отклонить (опрос каждые 10с)
+- В `/schedule` — Hover кнопки UserX (Запросить замену) + Trash (Удалить) на карточке урока; «Очистить неделю»
+
+### Тестирование
+- Iteration 2: 25/25 backend тестов PASS, все frontend V2 flows PASS. No bugs.
